@@ -23,7 +23,6 @@ app.controller("myController", function ($scope, $http, $log) {
     };
 
     var thisOneUser = function (response) {
-        console.log(response.data);
         $scope.onePerson = response.data;
     };
 
@@ -39,5 +38,29 @@ app.controller("myController", function ($scope, $http, $log) {
                 userName: userName
             }
         }).then(thisOneUser, onError);
+    };
+
+    var editPerson = function (response) {
+        $scope.editPerson = response.data;
+    };
+
+    $scope.Edit = function (userName) {
+        $http({
+            method: "POST",
+            url: "/Persons/FullDetails",
+            data: {
+                userName: userName
+            }
+        }).then(editPerson, onError);
+    };
+
+    $scope.SaveEdit = function (friend) {
+        $http({
+            method: "POST",
+            url: "/Persons/Edit",
+            data: {
+                friend: friend
+            }
+        }).then(editPerson, onError);
     };
 });

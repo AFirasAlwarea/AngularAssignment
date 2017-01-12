@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using AngularAssignment.Models;
+using System.Data.Entity.Migrations;
 
 namespace AngularAssignment.Controllers
 {
@@ -32,99 +33,22 @@ namespace AngularAssignment.Controllers
             return Json(oneUser, JsonRequestBehavior.AllowGet);
         }
 
-        // GET: Persons/Details/5
-        public ActionResult Details(int? id)
+        public JsonResult Edit(Person friend)
         {
-            if (id == null)
+            Person editPerson = db.Persons.Where(p => p.Id == friend.Id).FirstOrDefault();
+            if (editPerson != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Person person = db.Persons.Find(id);
-            if (person == null)
-            {
-                return HttpNotFound();
-            }
-            return View(person);
-        }
-
-        // GET: Persons/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Persons/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Telephone,Email")] Person person)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Persons.Add(person);
+                db.Persons.AddOrUpdate(p => p.Email,
+                new Person
+                {
+                    Name = friend.Name,
+                    Email = friend.Email,
+                    Telephone = friend.Telephone
+                });
                 db.SaveChanges();
-                return RedirectToAction("Index");
             }
-
-            return View(person);
-        }
-
-        // GET: Persons/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Person person = db.Persons.Find(id);
-            if (person == null)
-            {
-                return HttpNotFound();
-            }
-            return View(person);
-        }
-
-        // POST: Persons/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Telephone,Email")] Person person)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(person).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(person);
-        }
-
-        // GET: Persons/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Person person = db.Persons.Find(id);
-            if (person == null)
-            {
-                return HttpNotFound();
-            }
-            return View(person);
-        }
-
-        // POST: Persons/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Person person = db.Persons.Find(id);
-            db.Persons.Remove(person);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            var myList = db.Persons.ToList();
+            return Json(myList, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)
