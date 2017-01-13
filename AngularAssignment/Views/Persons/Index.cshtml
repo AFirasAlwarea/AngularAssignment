@@ -8,8 +8,9 @@
 <div ng-repeat="friend in PersonsList">
     <ul>
         <li>
+            <p ng-hide="true">{{friend.Id}}</p>
             {{friend.Name}}
-            <button type="button" ng-click="Edit(friend.Name)">Edit</button>
+            <button type="button" ng-click="Edit(friend.Id)">Edit</button>
             <button type="button" ng-click="showDetails(friend.Name)">Details</button>
         </li>
     </ul>
@@ -26,11 +27,11 @@
         <p>{{onePerson.Email}}</p>
     </div>
 </div>
-<div class="col-md-6" ng-show="editPerson" ng-submit="SaveEdit(editPerson)">
+<div class="col-md-6" ng-show="editPerson" ng-submit="SaveEdit(editPerson.Id)">
     <form>
-        <input ng-model="editPerson.Name" type="text" />
-        <input ng-model="editPerson.Telephone" type="text" />
-        <input ng-model="editPerson.Email" type="email" />
+        <input ng-model="editPerson.Name" type="text" placeholder="{{editPerson.Name}}" />
+        <input ng-model="editPerson.Telephone" type="text" placeholder="{{editPerson.Telephone}}"/>
+        <input ng-model="editPerson.Email" type="email" placeholder="{{editPerson.Email}}"/>
         <input type="submit" value="Save"/>
     </form>
 </div>

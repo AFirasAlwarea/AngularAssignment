@@ -33,20 +33,19 @@ namespace AngularAssignment.Controllers
             return Json(oneUser, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult Edit(Person friend)
+        public JsonResult Edit(int Id)
         {
-            Person editPerson = db.Persons.Where(p => p.Id == friend.Id).FirstOrDefault();
-            if (editPerson != null)
-            {
+            Person editPerson = db.Persons.Where(p => p.Id == Id).FirstOrDefault();
+            
                 db.Persons.AddOrUpdate(p => p.Email,
                 new Person
                 {
-                    Name = friend.Name,
-                    Email = friend.Email,
-                    Telephone = friend.Telephone
+                    Name = editPerson.Name,
+                    Email = editPerson.Email,
+                    Telephone = editPerson.Telephone
                 });
                 db.SaveChanges();
-            }
+            
             var myList = db.Persons.ToList();
             return Json(myList, JsonRequestBehavior.AllowGet);
         }

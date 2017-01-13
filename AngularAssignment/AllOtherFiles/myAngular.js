@@ -30,6 +30,7 @@ app.controller("myController", function ($scope, $http, $log) {
     //    $http.post("/Persons/FullDetails", userName)
     //        .then(thisOneUser,onError);
     //};
+
     $scope.showDetails = function (userName) {
         $http({
             method: "POST",
@@ -44,22 +45,24 @@ app.controller("myController", function ($scope, $http, $log) {
         $scope.editPerson = response.data;
     };
 
-    $scope.Edit = function (userName) {
-        $http({
-            method: "POST",
-            url: "/Persons/FullDetails",
-            data: {
-                userName: userName
-            }
-        }).then(editPerson, onError);
-    };
-
-    $scope.SaveEdit = function (friend) {
+    $scope.Edit = function (Id) {
+        console.log(Id);
         $http({
             method: "POST",
             url: "/Persons/Edit",
             data: {
-                friend: friend
+                Id: Id
+            }
+        }).then(editPerson, onError);
+    };
+
+    $scope.SaveEdit = function (Id) {
+        
+        $http({
+            method: "POST",
+            url: "/Persons/Edit",
+            data: {
+                Id: Id
             }
         }).then(editPerson, onError);
     };
