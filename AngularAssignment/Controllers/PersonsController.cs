@@ -35,17 +35,37 @@ namespace AngularAssignment.Controllers
 
         public JsonResult Edit(int Id)
         {
-            Person editPerson = db.Persons.Where(p => p.Id == Id).FirstOrDefault();
+            Person editPerson = db.Persons.FirstOrDefault(p => p.Id == Id);
             
-                db.Persons.AddOrUpdate(p => p.Email,
+            return Json(editPerson, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult SaveEdit(int Id, string Name, string Email, string Telephone)
+        {
+            Person person = db.Persons.FirstOrDefault(p => p.Id == Id);
+            if (person != null) 
+            {
+                person.Name = Name;
+                person.Email = Email;
+                person.Telephone = Telephone;
+
+            }
+            db.SaveChanges();
+
+            return Json(person, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult Create(string Name, string Email, string Telephone)
+        {
+            db.Persons.AddOrUpdate(p => p.Email,
                 new Person
                 {
-                    Name = editPerson.Name,
-                    Email = editPerson.Email,
-                    Telephone = editPerson.Telephone
+                    Name = Name,
+                    Email = Email,
+                    Telephone = Telephone
                 });
-                db.SaveChanges();
-            
+            db.SaveChanges();
+
             var myList = db.Persons.ToList();
             return Json(myList, JsonRequestBehavior.AllowGet);
         }

@@ -2,9 +2,23 @@
 @{
     ViewBag.Title = "Index";
 }
+
 <h2>{{message}} (SPA) using <b>AngularJS</b></h2>
+
 <button type="button" ng-click="ShowList()">Show The List</button>
+<button type="button" ng-click="ShowCreate()">Create</button>
+
 <br />
+
+<div ng-show="shoCreate" ng-submit="SaveCreate(createPerson)">
+    <form>
+        <input ng-model="createPerson.Name" type="text" placeholder="Name" />
+        <input ng-model="createPerson.Telephone" type="text" placeholder="Telephone" />
+        <input ng-model="createPerson.Email" type="email" placeholder="Email" />
+        <input type="submit" value="Save" />
+    </form>
+</div>
+
 <div ng-repeat="friend in PersonsList">
     <ul>
         <li>
@@ -15,6 +29,7 @@
         </li>
     </ul>
 </div>
+
 <div ng-show="onePerson">
     <div class="col-md-2">
         <p>Name: </p>
@@ -27,7 +42,8 @@
         <p>{{onePerson.Email}}</p>
     </div>
 </div>
-<div class="col-md-6" ng-show="editPerson" ng-submit="SaveEdit(editPerson.Id)">
+
+<div class="col-md-6" ng-show="editPerson" ng-submit="SaveEdit(editPerson)">
     <form>
         <input ng-model="editPerson.Name" type="text" placeholder="{{editPerson.Name}}" />
         <input ng-model="editPerson.Telephone" type="text" placeholder="{{editPerson.Telephone}}"/>

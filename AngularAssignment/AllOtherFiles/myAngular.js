@@ -42,6 +42,7 @@ app.controller("myController", function ($scope, $http, $log) {
     };
 
     var editPerson = function (response) {
+        console.log(response.data);
         $scope.editPerson = response.data;
     };
 
@@ -56,14 +57,35 @@ app.controller("myController", function ($scope, $http, $log) {
         }).then(editPerson, onError);
     };
 
-    $scope.SaveEdit = function (Id) {
+    $scope.SaveEdit = function (editPerson) {
         
         $http({
             method: "POST",
-            url: "/Persons/Edit",
+            url: "/Persons/SaveEdit",
             data: {
-                Id: Id
+                Id: editPerson.Id,
+                Name: editPerson.Name,
+                Email: editPerson.Email,
+                Telephone: editPerson.Telephone
             }
         }).then(editPerson, onError);
+    };
+
+    $scope.ShowCreate = function () {
+        $scope.shoCreate = true;
+    };
+
+    $scope.SaveCreate = function (createPerson) {
+        $http({
+            method: "POST",
+            url: "/Persons/Create",
+            data: {
+                Id: createPerson.Id,
+                Name: createPerson.Name,
+                Email: createPerson.Email,
+                Telephone: createPerson.Telephone
+            }
+        }).then(onMyList, onError);
+        $scope.shoCreate = false;
     };
 });
